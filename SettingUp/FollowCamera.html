@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>BabylonJS Demo</title>
+        <title>Follow Camera</title>
         <script src="https://cdn.babylonjs.com/babylon.max.js"></script>
         <style>
             #canvas {
@@ -11,7 +11,6 @@
                 height:100%;
             }
         </style>
-
     </head>
 
     <body>
@@ -21,7 +20,7 @@
             window.addEventListener("DOMContentLoaded", function() {
                 var canvas = document.getElementById("canvas");
 
-                //load Engine
+                //load engine
                 var engine = new BABYLON.Engine(canvas, true);
 
                 var createScene = function () {
@@ -29,33 +28,34 @@
                     var scene = new BABYLON.Scene(engine);
                     scene.clearColor = new BABYLON.Color3.White();
 
-                    //create a box mesh
                     var box = BABYLON.Mesh.CreateBox("Box",4.0,scene);
+                    var box_ = BABYLON.Mesh.CreateBox("Box_",4.0,scene);
 
-                    //Free Camera defined
-                    var camera = new BABYLON.FreeCamera("camera1",
-                    new BABYLON.Vector3(0,10,-10), scene);
+                    var material = new BABYLON.StandardMaterial("material_",scene);
+                    material.wireframe = material;
+                    box_.material = material;
+                    box_.position = new BABYLON.Vector3(0,4,0);
+
+                    //camera
+                    var camera = new BABYLON.FollowCamera("followCam", new BABYLON.Vector3(0, 0, -20),scene);
+                    camera.lockedTarget  = box;
+                    camera.radius = 10;
+                    camera.heightOffset = 0;
                     
-                    //Attach camera control
-                    camera.attachControl(canvas,true);
-                    camera.keysUp.push(87);
-                    camera.keysDown.push(83);
-                    camera.keysLeft.push(65);
-                    camera.keysRight.push(68);
+                    camera.attachControl(canvas,true);  
 
-                    //set target lookat of the camera
-                    camera.setTarget(BABYLON.Vector3.Zero());                  
                     return scene;
                 }
 
                 var scene = createScene();
 
-                //Gameloop
+                //gameloop
                 engine.runRenderLoop(function() {
+                    scene.getMeshByName("Box").position.z += 0.01;
                     scene.render();
-                });
-
+                })
             });
         </script>
     </body>
+
 </html>
