@@ -29,23 +29,15 @@
                     var scene = new BABYLON.Scene(engine);
                     scene.clearColor = new BABYLON.Color3.White();
 
-                    //Camera defined
-                    var camera = new BABYLON.FreeCamera("camera1",
-                    new BABYLON.Vector3(0,10,-10), scene);
-
-                    //set target lookat of the camera
-                    camera.setTarget(BABYLON.Vector3.Zero());
-
-                    //Attach camera control
-                    camera.attachControl(canvas,true);
-                    camera.keysUp.push(87);
-                    camera.keysDown.push(83);
-                    camera.keysLeft.push(65);
-                    camera.keysRight.push(68);
-
-
                     //create a box mesh
                     var box = BABYLON.Mesh.CreateBox("Box",4.0,scene);
+
+                    var camera = new BABYLON.ArcRotateCamera("arcCamera",
+                    BABYLON.Tools.ToRadians(45),
+                    BABYLON.Tools.ToRadians(45),
+                    10.0, box.Postion, scene);  
+
+                    camera.attachControl(canvas,true);   
 
                     return scene;
                 }

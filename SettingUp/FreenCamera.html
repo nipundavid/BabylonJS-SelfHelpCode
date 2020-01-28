@@ -1,0 +1,61 @@
+<!Doctype html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>BabylonJS Demo</title>
+        <script src="https://cdn.babylonjs.com/babylon.max.js"></script>
+        <style>
+            #canvas {
+                width: 100%;
+                height:100%;
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <canvas id = "canvas"></canvas>
+
+        <script>
+            window.addEventListener("DOMContentLoaded", function() {
+                var canvas = document.getElementById("canvas");
+
+                //load Engine
+                var engine = new BABYLON.Engine(canvas, true);
+
+                var createScene = function () {
+                    //create scene object
+                    var scene = new BABYLON.Scene(engine);
+                    scene.clearColor = new BABYLON.Color3.White();
+
+                    //create a box mesh
+                    var box = BABYLON.Mesh.CreateBox("Box",4.0,scene);
+
+                    //Free Camera defined
+                    var camera = new BABYLON.FreeCamera("camera1",
+                    new BABYLON.Vector3(0,10,-10), scene);
+                    
+                    //Attach camera control
+                    camera.attachControl(canvas,true);
+                    camera.keysUp.push(87);
+                    camera.keysDown.push(83);
+                    camera.keysLeft.push(65);
+                    camera.keysRight.push(68);
+
+                    //set target lookat of the camera
+                    camera.setTarget(BABYLON.Vector3.Zero());                  
+                    return scene;
+                }
+
+                var scene = createScene();
+
+                //Gameloop
+                engine.runRenderLoop(function() {
+                    scene.render();
+                });
+
+            });
+        </script>
+    </body>
+</html>
